@@ -1,0 +1,29 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "editor.formatOnSave": true,
+  "eslint.rules.customizations": [
+    {
+      "rule": "*",
+      "severity": "warn"
+    }
+  ],
+  "eslint.workingDirectories": [
+    {
+      "pattern": "apps/*/"
+    },
+    {
+      "pattern": "packages/*/"
+    },
+    {
+      "pattern": "tooling/*/"
+    }
+  ],
+  "tailwindCSS.experimental.configFile": "packages/ui/src/styles/globals.css",
+  "typescript.preferences.autoImportFileExcludePatterns": [
+    "next/dist/client/router.d.ts",
+    "next/router.d.ts"
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib"
+}

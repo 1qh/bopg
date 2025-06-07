@@ -1,0 +1,27 @@
+{
+  "name": "a",
+  "private": true,
+  "workspaces": ["apps/*", "packages/*", "tooling/*"],
+  "scripts": {
+    "build": "turbo run build",
+    "clean": "git clean -xdf node_modules bun.lock .turbo",
+    "clean:workspaces": "turbo run clean",
+    "db:push": "turbo -F @a/db push",
+    "db:studio": "turbo -F @a/db studio",
+    "dev": "turbo watch dev --continue",
+    "dev:next": "turbo watch dev -F @a/nextjs...",
+    "fix": "sort-package-json **/package.json && bun lint:fix && biome check --fix && bun typecheck",
+    "postinstall": "bun lint:ws",
+    "lint": "turbo run lint --continue -- --cache --cache-location .cache/.eslintcache",
+    "lint:fix": "turbo run lint --continue -- --fix --cache --cache-location .cache/.eslintcache",
+    "lint:ws": "bunx sherif@latest",
+    "typecheck": "turbo run typecheck"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "latest",
+    "sort-package-json": "latest",
+    "turbo": "latest",
+    "typescript": "latest"
+  },
+  "packageManager": "bun@1.2.16"
+}

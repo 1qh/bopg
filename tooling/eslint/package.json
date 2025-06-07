@@ -1,0 +1,32 @@
+{
+  "name": "@a/eslint-config",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./base": "./base.js",
+    "./nextjs": "./nextjs.js",
+    "./react": "./react.js"
+  },
+  "scripts": {
+    "clean": "git clean -xdf .cache .turbo node_modules",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@eslint/compat": "latest",
+    "@next/eslint-plugin-next": "latest",
+    "eslint-plugin-better-tailwindcss": "latest",
+    "eslint-plugin-import": "latest",
+    "eslint-plugin-jsx-a11y": "latest",
+    "eslint-plugin-perfectionist": "latest",
+    "eslint-plugin-prefer-arrow-functions": "latest",
+    "eslint-plugin-react": "latest",
+    "eslint-plugin-react-hooks": "rc",
+    "eslint-plugin-turbo": "latest",
+    "typescript-eslint": "latest"
+  },
+  "devDependencies": {
+    "@a/tsconfig": "*",
+    "eslint": "latest",
+    "typescript": "latest"
+  }
+}

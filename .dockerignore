@@ -1,0 +1,9 @@
+.dockerignore
+.git
+.next
+.vscode
+Dockerfile
+README.md
+bun.lock
+node_modules
+npm-debug.log

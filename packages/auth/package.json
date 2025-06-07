@@ -1,0 +1,35 @@
+{
+  "name": "@a/auth",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "react-server": "./src/index.rsc.ts",
+      "default": "./src/index.ts"
+    },
+    "./env": "./env.ts"
+  },
+  "scripts": {
+    "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@a/db": "*",
+    "@auth/core": "latest",
+    "@auth/drizzle-adapter": "latest",
+    "@t3-oss/env-nextjs": "latest",
+    "next": "latest",
+    "next-auth": "beta",
+    "react": "latest",
+    "react-dom": "latest",
+    "zod": "latest"
+  },
+  "devDependencies": {
+    "@a/eslint-config": "*",
+    "@a/tsconfig": "*",
+    "@types/react": "latest",
+    "typescript": "latest"
+  }
+}
