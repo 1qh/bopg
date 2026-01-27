@@ -1,0 +1,8 @@
+*.html
+*.json
+*.md
+*.txt
+*.xlsx
+*_.ts
+_*.ts
+_*/

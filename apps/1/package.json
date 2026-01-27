@@ -1,0 +1,34 @@
+{
+  "name": "@a/1",
+  "type": "module",
+  "scripts": {
+    "build": "bun with-env next build --turbo",
+    "clean": "git clean -xdf .cache .next .turbo node_modules",
+    "dev": "bun with-env next dev --turbo",
+    "lint": "eslint",
+    "start": "bun with-env next start",
+    "typecheck": "tsc --noEmit",
+    "with-env": "dotenv -e ../../.env --"
+  },
+  "dependencies": {
+    "@ai-sdk/google": "beta",
+    "@ai-sdk/openai-compatible": "beta",
+    "@codemirror/lang-python": "latest",
+    "@fsegurai/codemirror-theme-bundle": "latest",
+    "@monaco-editor/react": "next",
+    "codemirror": "latest",
+    "next": "latest",
+    "papaparse": "latest",
+    "prosemirror-example-setup": "latest",
+    "prosemirror-markdown": "latest",
+    "prosemirror-schema-basic": "latest",
+    "react-data-grid": "latest",
+    "redis": "latest",
+    "resumable-stream": "latest",
+    "usehooks-ts": "latest"
+  },
+  "devDependencies": {
+    "@types/papaparse": "latest",
+    "pyodide": "latest"
+  }
+}

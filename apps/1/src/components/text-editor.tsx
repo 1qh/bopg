@@ -1,0 +1,104 @@
+'use client'
+
+import type { Suggestion } from '@a/db/schema'
+
+import { exampleSetup } from 'prosemirror-example-setup'
+import { inputRules } from 'prosemirror-inputrules'
+import { EditorState } from 'prosemirror-state'
+import { EditorView } from 'prosemirror-view'
+import { memo, useEffect, useRef } from 'react'
+
+import { documentSchema, handleTransaction, headingRule } from '~/lib/editor/config'
+import { buildContentFromDocument, buildDocumentFromContent, createDecorations } from '~/lib/editor/functions'
+import { projectWithPositions, suggestionsPlugin, suggestionsPluginKey } from '~/lib/editor/suggestions'
+
+interface EditorProps {
+  content: string
+  onSaveContent: (updatedContent: string, debounce: boolean) => void
+  status: 'idle' | 'streaming'
+  suggestions: Suggestion[]
+}
+
+const PureEditor = ({ content, onSaveContent, status, suggestions }: EditorProps) => {
+    const containerRef = useRef<HTMLDivElement>(null),
+      editorRef = useRef<EditorView | null>(null)
+
+    useEffect(() => {
+      if (containerRef.current && !editorRef.current) {
+        const state = EditorState.create({
+          doc: buildDocumentFromContent(content),
+          plugins: [
+            ...exampleSetup({ menuBar: false, schema: documentSchema }),
+            inputRules({
+              rules: [headingRule(1), headingRule(2), headingRule(3), headingRule(4), headingRule(5), headingRule(6)]
+            }),
+            suggestionsPlugin
+          ]
+        })
+        editorRef.current = new EditorView(containerRef.current, { state })
+      }
+      return () => {
+        if (editorRef.current) {
+          editorRef.current.destroy()
+          editorRef.current = null
+        }
+      }
+    }, [content])
+
+    useEffect(() => {
+      if (editorRef.current)
+        editorRef.current.setProps({
+          dispatchTransaction: transaction => {
+            handleTransaction({ editorRef, onSaveContent, transaction })
+          }
+        })
+    }, [onSaveContent])
+
+    // eslint-disable-next-line max-statements
+    useEffect(() => {
+      if (editorRef.current && content) {
+        const currentContent = buildContentFromDocument(editorRef.current.state.doc)
+        if (status === 'streaming') {
+          const newDocument = buildDocumentFromContent(content),
+            transaction = editorRef.current.state.tr.replaceWith(
+              0,
+              editorRef.current.state.doc.content.size,
+              newDocument.content
+            )
+          transaction.setMeta('no-save', true)
+          editorRef.current.dispatch(transaction)
+          return
+        }
+        if (currentContent !== content) {
+          const newDocument = buildDocumentFromContent(content),
+            transaction = editorRef.current.state.tr.replaceWith(
+              0,
+              editorRef.current.state.doc.content.size,
+              newDocument.content
+            )
+          transaction.setMeta('no-save', true)
+          editorRef.current.dispatch(transaction)
+        }
+      }
+    }, [content, status])
+
+    useEffect(() => {
+      if (editorRef.current?.state.doc && content) {
+        const projectedSuggestions = projectWithPositions(editorRef.current.state.doc, suggestions).filter(
+            suggestion => suggestion.selectionStart && suggestion.selectionEnd
+          ),
+          decorations = createDecorations(projectedSuggestions, editorRef.current),
+          transaction = editorRef.current.state.tr
+        transaction.setMeta(suggestionsPluginKey, { decorations })
+        editorRef.current.dispatch(transaction)
+      }
+    }, [suggestions, content])
+    return <div className='relative prose dark:prose-invert' ref={containerRef} />
+  },
+  areEqual = (prevProps: EditorProps, nextProps: EditorProps) =>
+    prevProps.suggestions === nextProps.suggestions &&
+    !(prevProps.status === 'streaming' && nextProps.status === 'streaming') &&
+    prevProps.content === nextProps.content &&
+    prevProps.onSaveContent === nextProps.onSaveContent
+
+export const Editor = memo(PureEditor, areEqual)

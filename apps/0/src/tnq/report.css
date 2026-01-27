@@ -1,0 +1,76 @@
+body {
+  font-family:
+    -apple-systrem, BlinkMacSystremFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
+    sans-serif;
+  margin: 3rem;
+}
+
+svg {
+  display: none;
+}
+
+table th {
+  border-bottom: 1px solid #ddd;
+}
+
+table {
+  margin-left: 1.5rem;
+  border-spacing: 0;
+  border-collapse: collapse;
+  counter-reset: rowNum;
+}
+
+table tr > td:first-child {
+  counter-increment: rowNum;
+}
+
+table tr td:first-child::before {
+  content: counter(rowNum);
+  display: inline-block;
+  min-width: 1.5rem;
+  margin-left: -2.5rem;
+  margin-right: 1rem;
+  color: darkgray;
+  text-align: right;
+  font-size: small;
+}
+
+table td,
+table th {
+  text-align: left;
+  border-left: 1px solid #ddd;
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+}
+
+ol {
+  list-style-type: none;
+  margin-left: -3.5rem;
+}
+
+ol > li {
+  counter-increment: count;
+}
+
+ol > li:before {
+  content: counter(count);
+  text-align: right;
+  display: inline-block;
+  margin-right: 1rem;
+  color: darkgray;
+  font-weight: 200;
+  width: 2rem;
+}
+
+ol:first-child {
+  counter-reset: count;
+}
+
+ul {
+  list-style-type: none;
+}
+
+ul li::before {
+  margin-left: -1.2rem;
+  content: '⋅ ';
+}
